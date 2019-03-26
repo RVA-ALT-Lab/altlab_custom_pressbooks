@@ -73,3 +73,22 @@ function h5pflex_widget_enqueue_script() {
     wp_enqueue_script( 'h5p_flex', $h5p_script, true );
 
     }
+
+/*------------------------------------ NEXT PAGE  ---------------------------------------------------*/
+
+/**
+ * Replace [nextpage] with <!--nextpage--> through the 'the_posts' filter.
+ *
+ * @see http://wordpress.stackexchange.com/a/183980/26350
+ */
+
+! is_admin() && add_filter( 'the_posts', function( $posts )
+{
+    $posts = array_map( function( $p )
+    {
+        if ( false !== strpos( $p->post_content, '[nextpage]' ) )
+            $p->post_content = str_replace( '[nextpage]', '<!--nextpage-->', $p->post_content ); 
+        return $p;
+    }, $posts );
+    return $posts;
+});
